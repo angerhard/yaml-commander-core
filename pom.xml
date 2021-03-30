@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>de.andreasgerhard</groupId>
-    <artifactId>yaml-commander-core</artifactId>
+    <artifactId>yaml-exec-core</artifactId>
     <version>1.0-SNAPSHOT</version>
 
     <properties>
@@ -17,12 +17,12 @@
         <repository>
             <id>github</id>
             <name>GitHub AnGerhard repo</name>
-            <url>https://maven.pkg.github.com/angerhard/yaml-commander-core</url>
+            <url>https://maven.pkg.github.com/angerhard/maven-repository</url>
         </repository>
         <snapshotRepository>
             <id>github</id>
             <name>GitHub AnGerhard repo</name>
-            <url>https://maven.pkg.github.com/angerhard/yaml-commander-core</url>
+            <url>https://maven.pkg.github.com/angerhard/maven-repository</url>
         </snapshotRepository>
     </distributionManagement>
 
@@ -30,7 +30,7 @@
         <repository>
             <id>github</id>
             <name>GitHub AnGerhard repo</name>
-            <url>https://maven.pkg.github.com/angerhard/yaml-commander-annotation</url>
+            <url>https://maven.pkg.github.com/angerhard/maven-repository</url>
         </repository>
     </repositories>
 
@@ -67,7 +67,7 @@
         </dependency>
         <dependency>
             <groupId>de.andreasgerhard</groupId>
-            <artifactId>yaml-commander-annotation</artifactId>
+            <artifactId>yaml-exec-annotation</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
 
