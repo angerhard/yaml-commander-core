@@ -1,0 +1,7 @@
+multi-enum:
+  init:
+    path: test1
+    acl:
+      - LIST
+      - READ
+

@@ -1,0 +1,4 @@
+multi-string:
+  init:
+    shares: test1
+    threshold: test2

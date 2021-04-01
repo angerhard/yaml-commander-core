@@ -1,0 +1,5 @@
+multi-array:
+    secret:
+      - {key: "secret1", value: "123", update:}
+      - {key: "secret2", policy: "default1", update:}
+      - {key: "secret3", policy: "default2", update:}

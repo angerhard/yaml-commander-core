@@ -1,0 +1,4 @@
+multi-int:
+  init:
+    shares: 2
+    threshold: 5

@@ -1,0 +1,25 @@
+vault:
+  host: "https://solitude.andreasgerhard.de:8200"
+  init:
+    shares: 2
+    threshold: 5
+  unseal:
+  printCredentials:
+  engine:
+    type: "kv"
+    path: "/secret"
+  application:
+    name: "app"
+    passwordPolicy:
+      name: "default"
+      policy: STANDARD
+    secret:
+      - {key: "secret1", value: "123", update:}
+      - {key: "secret2", policy: "default", update:}
+      - {key: "secret3", policy: "default", update:}
+    acl:
+      suffix: "acl"
+      applicationPermission:
+        - LIST
+        - READ
+    token:
