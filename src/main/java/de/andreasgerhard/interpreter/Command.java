@@ -39,6 +39,7 @@ class Command {
 
     if (method.getParameterCount() == 0 && commandJsonNode instanceof ArrayNode) {
       commandJsonNode.iterator().forEachRemaining(jsonNode -> {
+        Registry.setPath(jsonNode);
         Object execute = execute();
         new Node(execute, jsonNode);
       });
