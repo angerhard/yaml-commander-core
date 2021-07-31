@@ -40,6 +40,24 @@ class InterpreterTest {
     }
 
     @Test
+    void shouldReadSingleOnlyTagValue() throws Exception {
+        Interpreter interpreter = new Interpreter(new File(getResourcePath(), "single-only-tag-parameter.yaml").getAbsolutePath());
+        Assertions
+            .assertThat(((SingleOnlyTagParameter) interpreter.getMainInstance())
+                .getTest())
+            .isEqualTo("assertedValue");
+    }
+
+    @Test
+    void shouldReadSingleWithoutParameterValue() throws Exception {
+        Interpreter interpreter = new Interpreter(new File(getResourcePath(), "single-only-init-wo-parameter.yaml").getAbsolutePath());
+        Assertions
+            .assertThat(((SingleOnlyTagParameter) interpreter.getMainInstance())
+                .getTest())
+            .isEqualTo("onlyinitcalled");
+    }
+
+    @Test
     void shouldReadEnumArrayValue() throws Exception {
         Interpreter interpreter = new Interpreter(
                 new File(getResourcePath(), "multiple-enumarrays-parameter.yaml").getAbsolutePath());
@@ -106,6 +124,15 @@ class InterpreterTest {
         Assertions
                 .assertThat(mainInstance.getUpdateCalled())
                 .isEqualTo(3);
+    }
+
+    @Test
+    void shouldFindNewClass() throws Exception {
+        Interpreter interpreter = new Interpreter(new File(getResourcePath(), "new-class.yaml").getAbsolutePath());
+        Assertions
+            .assertThat(((NewClassType) interpreter.getMainInstance())
+                .getApplication().getName())
+            .isEqualTo("test-application");
     }
 }
 

@@ -37,6 +37,14 @@ class Command {
         break;
     }
 
+    StringBuilder parameterInfo = new StringBuilder();
+    Arrays.stream(method.getParameters()).forEach(p -> {
+      Tag tagAnnotation = p.getAnnotation(Tag.class);
+      parameterInfo.append(" (").append(p.getName()).append(tagAnnotation == null ? ") " : " @Tag("+tagAnnotation.value()+") ");
+    });
+
+    log.info("invoke: " + method.getDeclaringClass().getSimpleName()+"#"+method.getName()+parameterInfo.toString());
+
     if (method.getParameterCount() == 0 && commandJsonNode instanceof ArrayNode) {
       commandJsonNode.iterator().forEachRemaining(jsonNode -> {
         Registry.setPath(jsonNode);
@@ -45,6 +53,7 @@ class Command {
       });
       return;
     }
+
 
     Object execute = execute();
 
@@ -64,13 +73,15 @@ class Command {
   }
 
   private void readSingleParameter() {
-    Arrays.stream(method.getParameters()).forEach(param -> {
-      if (param.getAnnotation(Tag.class) == null) {
-        errorTagNotFound(method.getDeclaringClass().getName() + "#" + method.getName());
-      }
-      String key = param.getAnnotation(Tag.class).value();
-      extractValueFromJsonObject(key, commandJsonNode);
-    });
+    Arrays.stream(method.getParameters())
+        .forEach(
+            param -> {
+              if (param.getAnnotation(Tag.class) == null) {
+                errorTagNotFound(method.getDeclaringClass().getName() + "#" + method.getName());
+              }
+              String key = param.getAnnotation(Tag.class).value();
+              extractValueFromJsonObject(key, commandJsonNode);
+            });
   }
 
   private void readNoneParameter() {

@@ -11,56 +11,57 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+import org.reflections.scanners.FieldAnnotationsScanner;
+import org.reflections.scanners.ResourcesScanner;
+import org.reflections.scanners.SubTypesScanner;
+import org.reflections.scanners.TypeAnnotationsScanner;
 
 @Log
 public class Chain {
 
-    private static final Map<String, Class> ROOTS = new HashMap<>();
+  private static final Map<String, Class> ROOTS = new HashMap<>();
 
-    static {
+  static {
+    Reflections reflections =
+        new Reflections(
+            "de",
+            new SubTypesScanner(),
+            new TypeAnnotationsScanner(),
+            new FieldAnnotationsScanner());
+    Set<Class<?>> annotated = reflections.getTypesAnnotatedWith(YamlCommanderRoot.class);
+    for (Class<?> controller : annotated) {
 
-        Reflections reflections = new Reflections("");
-        Set<Class<?>> annotated = reflections.getTypesAnnotatedWith(YamlCommanderRoot.class);
-        for (Class<?> controller : annotated) {
-
-            ROOTS.put(controller
-                    .getAnnotation(YamlCommanderRoot.class)
-                    .value(), controller);
-        }
-
+      ROOTS.put(controller.getAnnotation(YamlCommanderRoot.class).value(), controller);
     }
+  }
 
-    @Getter
-    private Object activeObject;
+  @Getter private Object activeObject;
 
-    public Chain addRootClasses(Map<String, Class> roots) {
-        ROOTS.putAll(roots);
-        return this;
-    }
+  public Chain addRootClasses(Map<String, Class> roots) {
+    ROOTS.putAll(roots);
+    return this;
+  }
 
-    public Chain readRoot(Iterator<Entry<String, JsonNode>> fields) {
-        fields.forEachRemaining(stringJsonNodeEntry -> {
-            activeObject = null;
-            readObject(stringJsonNodeEntry.getKey(),
-                    stringJsonNodeEntry.getValue());
+  public Chain readRoot(Iterator<Entry<String, JsonNode>> fields) {
+    fields.forEachRemaining(
+        stringJsonNodeEntry -> {
+          activeObject = null;
+          readObject(stringJsonNodeEntry.getKey(), stringJsonNodeEntry.getValue());
         });
-        return this;
-    }
+    return this;
+  }
 
-    @SneakyThrows
-    private void readObject(String name, JsonNode field) {
-        buildRootClass(name);
-        new Node(activeObject, field);
-    }
+  @SneakyThrows
+  private void readObject(String name, JsonNode field) {
+    buildRootClass(name);
+    new Node(activeObject, field);
+  }
 
-    private void buildRootClass(String name)
-            throws InstantiationException, IllegalAccessException, java.lang.reflect.InvocationTargetException, NoSuchMethodException {
-        if (activeObject == null) {
-            activeObject = ROOTS
-                    .get(name)
-                    .getDeclaredConstructor()
-                    .newInstance();
-        }
+  private void buildRootClass(String name)
+      throws InstantiationException, IllegalAccessException,
+          java.lang.reflect.InvocationTargetException, NoSuchMethodException {
+    if (activeObject == null) {
+      activeObject = ROOTS.get(name).getDeclaredConstructor().newInstance();
     }
-
+  }
 }
