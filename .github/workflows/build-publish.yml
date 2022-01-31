@@ -34,4 +34,4 @@ jobs:
         run: mvn -B package --file pom.xml
 
       - name: Publish event hub source
-        run: mvn deploy
+        run: mvn source:jar deploy
